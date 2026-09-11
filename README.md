@@ -158,9 +158,9 @@ The skills ship with sensible defaults. Adapt these three to match what your tea
 |---|---|
 | `.claude/skills/qa-test-writing/references/test-case-format.md` | Your test-case sheet's columns |
 | `.claude/skills/qa-bug-reporting/references/priority-and-labels.md` | Your tracker's priorities and labels |
-| `knowledge-base/reference-data/permissions-matrix.example.csv` | Your real roles × features matrix (same columns) |
+| `knowledge-base/reference-data/permissions-matrix.csv` | Add your roles × features matrix here — see the skill's `references/matrix-guide.md` for the expected shape |
 
-✅ **Check:** run the permission lookup against your matrix:
+✅ **Check:** once your matrix is in place, the permission lookup can read it:
 
 ```bash
 python .claude/skills/qa-permission-testing/scripts/lookup_permission.py --list-roles

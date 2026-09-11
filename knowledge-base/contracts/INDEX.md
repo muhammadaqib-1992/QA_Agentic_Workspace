@@ -2,19 +2,17 @@
 
 Contractual scope and deliverables (SOW). Rarely needed for test execution — kept so scope questions have an answer rather than an opinion.
 
-**Read this index before opening anything in this folder.** Only open a source document when the row below tells you it is the one you need.
+**Read this index before opening anything in this folder.** Only open a source document when a row below says it is the one you need.
 
 | Document | Covers | Notes |
 |---|---|---|
-| `sow-signed.pdf` | Phases, deliverables, in/out of scope | Commercially sensitive |
-| `<filename>` | `<what it covers>` | `<status>` |
 
-## Before committing anything here
+*Empty. Add one row per document as you add it.*
 
-Contracts are commercially sensitive and, once committed, stay in git history permanently even if deleted later. For a repo shared with a delivery team, prefer **linking** to the document from this index over committing the file itself.
+## Before adding anything here
 
-If the folder ends up empty because of that, the index still earns its place: it tells the agent where scope lives and who to ask.
+Contracts are commercially sensitive. Documents in this folder are never committed — they stay on your machine and are blocked from git — but be deliberate about what you sync here at all. For a document that only matters occasionally, a link in this index is often enough.
 
 ## Known gaps
 
-- `<area>` — scope ambiguous between the SOW and the BRD; unresolved.
+Record scope that is ambiguous or disputed between documents, and who owns resolving it.

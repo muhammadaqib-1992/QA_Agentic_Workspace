@@ -5,4 +5,4 @@
 # locally from Google Drive — and project documents never go to GitHub.
 #
 # To allow a new kind of committed file, change it here, in this one place.
-KB_ALLOWED_RE='^knowledge-base/(README\.md|sync-config\.json|[^/]+/INDEX\.md|[^/]+/\.gitkeep|reference-data/permissions-matrix\.example\.csv)$'
+KB_ALLOWED_RE='^knowledge-base/(README\.md|sync-config\.json|[^/]+/INDEX\.md|[^/]+/\.gitkeep)$'

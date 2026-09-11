@@ -33,7 +33,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 HERE = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_MATRIX = os.path.normpath(
     os.path.join(HERE, "..", "..", "..", "..",
-                 "knowledge-base", "reference-data", "permissions-matrix.example.csv"))
+                 "knowledge-base", "reference-data", "permissions-matrix.csv"))
 
 # Fill colour -> verdict, for colour-coded spreadsheets. Adjust to your sheet's palette.
 COLOUR_VERDICTS = {

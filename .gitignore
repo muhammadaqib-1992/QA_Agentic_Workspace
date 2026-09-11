@@ -30,7 +30,6 @@ knowledge-base/**
 !knowledge-base/sync-config.json
 !knowledge-base/**/INDEX.md
 !knowledge-base/**/.gitkeep
-!knowledge-base/reference-data/permissions-matrix.example.csv
 
 # Tooling run artefacts — regenerate rather than commit.
 # (test-cases/, reports/ and bug-evidence/ ARE tracked — they are the team's QA record.)

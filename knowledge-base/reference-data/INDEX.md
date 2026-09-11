@@ -2,20 +2,18 @@
 
 Structured lookup data — permission matrices, configuration exports, test-data catalogues.
 
-**Read this index before opening anything in this folder.** For files queried often, run the owning skill's script rather than reading the file by hand.
+**Read this index before opening anything in this folder.** For a file queried often, run the owning skill's script rather than reading the file into context.
 
 | File | Covers | How to read it |
 |---|---|---|
-| `permissions-matrix.example.csv` | Roles x features, with scope qualifiers | **Run** `.claude/skills/qa-permission-testing/scripts/lookup_permission.py` — do not read the file into context |
-| `custom-fields-export.csv` | Custom field ids, types, applied record types | Grep for the field id when a defect needs it cited |
-| `test-data-catalogue.md` | Known-good records per scenario: customers, items, orders | Saves re-discovering which record has the state a test needs |
-| `<filename>` | `<what it covers>` | `<script, or read directly>` |
+
+*Empty. Add one row per file as you add it, and say whether a script reads it or it is read directly.*
 
 ## Rule of thumb
 
-If a file here gets queried more than a couple of times, it should have a **script** in the owning skill rather than being parsed ad hoc each run. A script's source never enters the context window — only its output does — and tested code beats code regenerated from scratch on every run.
+If a file here gets queried more than a couple of times, it should have a **script** in the owning skill rather than being parsed ad hoc each run. A script's source never enters the context window — only its output does — and tested code beats code regenerated from scratch every time.
 
-`permissions-matrix.example.csv` is the worked example: see `.claude/skills/qa-permission-testing/`.
+The permission matrix is the worked example: put yours here as `permissions-matrix.csv` and `.claude/skills/qa-permission-testing/scripts/lookup_permission.py` will query it. See that skill's `references/matrix-guide.md` for the expected columns.
 
 ## Keeping this current
 

@@ -12,7 +12,7 @@ Rows are features, columns are roles:
 | 2 — `Feature` | The page, action or capability being governed |
 | 3+ | One column per role. The header is the role name |
 
-`knowledge-base/reference-data/permissions-matrix.example.csv` is a working example of this shape.
+`knowledge-base/reference-data/permissions-matrix.csv` is a working example of this shape.
 
 ## Verdicts
 
