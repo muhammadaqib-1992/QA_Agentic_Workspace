@@ -27,6 +27,16 @@
 
 **Project documents never go to git.** Everything in `knowledge-base/` except the READMEs, `INDEX.md` files and `sync-config.json` is local-only — git-ignored, refused by `.githooks/pre-commit`, and refused by the Claude hook. Never `git add -f` anything there.
 
+**Agents** (`.claude/agents/` — read-only helpers that run in their own context, so a bulky lookup never crowds out the task in hand):
+
+| Agent | Ask it for | It will never |
+|---|---|---|
+| `qa-test-data-prep` | The backend records a run needs — a user holding a given role and its parent account, an unrelated account's transactions for an access-exclusion check, records in a particular status. | Create or edit a record, or touch the browser |
+| `qa-duplicate-check` | A tracker search for an existing ticket before a defect is drafted. Returns ranked candidates and a recommendation: log new, comment, or reopen. | Create, edit, comment on or transition a ticket |
+| `qa-researcher` | A question whose *searching* is bulky but whose *answer* is small — surveying many documents or transcripts at once. | Write anything |
+
+Anything that drives the browser stays in the main thread: there is one shared browser and the user handles logins.
+
 > **Subagents don't inherit these skills.** A skill loads into *your* conversation. A subagent sees them only if it is a custom agent in `.claude/agents/` that lists them in its frontmatter `skills:` field — and built-in agents can't use skills at all. Keep skill-driven work in the main thread.
 
 **Environment file:** `.claude/qa-test-env.md` (git-ignored, per-teammate; template `.claude/qa-test-env.example.md`). Holds environment URLs, account identifiers, tracker details, and per-role test logins. The execution and permission skills read it at the start of a run; a `<PLACEHOLDER>` there means ask the user in chat. **Never** write credentials into reports, screenshots, the tracker, the project docs, or chat beyond the turn they are given — and never paste the env file's contents anywhere.

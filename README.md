@@ -370,8 +370,10 @@ QA_Agentic_Workspace/
 │   ├── qa-test-env.example.md   # Env TEMPLATE (committed, no real secrets)
 │   ├── qa-test-env.md           # Your local copy (git-ignored — you create this)
 │   ├── settings.json.example    # Hook configuration
-│   ├── agents/
-│   │   └── qa-researcher.md     # Custom subagent — note its `skills:` frontmatter
+│   ├── agents/                  # Read-only background helpers
+│   │   ├── qa-test-data-prep.md    # Finds the backend records a run needs
+│   │   ├── qa-duplicate-check.md   # Checks the tracker before a defect is raised
+│   │   └── qa-researcher.md        # Custom subagent — note its `skills:` frontmatter
 │   ├── hooks/
 │   │   ├── block-secret-commit.sh   # PreToolUse — refuses to commit credentials
 │   │   └── session-start-check.sh   # SessionStart — primes each session
