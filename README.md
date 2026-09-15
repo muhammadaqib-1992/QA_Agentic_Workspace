@@ -141,7 +141,9 @@ Worth knowing:
 - The task runs while the Claude app is open. If it's closed on Monday morning, it runs at the next launch.
 - The sync never commits or pushes. Review the new index rows, then commit the `INDEX.md` changes yourself.
 - To sync outside the schedule, just say *"sync the knowledge base"*.
-- Video, audio and files above 25 MB are linked in the index rather than downloaded. Change `max_download_mb` in `sync-config.json` if that doesn't suit.
+- Video and audio are linked in the index rather than downloaded, and so is anything above **10 MB** — that is the Google Drive connector's own hard limit, not a setting, so raising `max_download_mb` will not help. The index row carries the Drive URL instead.
+- Zoom writes each call twice. `*.cc.vtt` is excluded in `sync-config.json`: no speaker names, coarser timestamps than the `*.transcript.vtt` copy of the same call.
+- For a backlog of transcripts, ask for the call index to be built — `scripts/profile_transcripts.py` reports each call's date, speakers and dominant topics without reading hours of speech into the conversation. That output is a routing table, never a summary of what was decided.
 
 ### Step 8 — Match the formats to your team (optional but worth it)
 
