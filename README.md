@@ -70,16 +70,9 @@ Open `.claude/qa-test-env.md` and fill in what you have: environment URLs, track
 
 ### Step 4 — Turn on the safety hooks
 
-```bash
-cp .claude/settings.json.example .claude/settings.json
-```
+The Claude-side hooks are already on: `.claude/settings.json` is committed, so a clone has them from the first session. (Personal tweaks go in `.claude/settings.local.json`, which stays out of git — don't edit the shared file for machine-specific things.)
 
-PowerShell:
-```powershell
-Copy-Item .claude/settings.json.example .claude/settings.json
-```
-
-Then switch on the git-level guard. Run this once per clone — git never enables a repo's hooks automatically:
+The git-level guard is the one thing that cannot ship switched on: git never runs hooks that arrive with a clone, by design. Once per clone:
 
 ```bash
 git config core.hooksPath .githooks

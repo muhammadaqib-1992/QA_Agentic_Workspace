@@ -5,7 +5,9 @@
 # The PreToolUse hook in .claude/hooks/block-secret-commit.sh backs this up.
 # ---------------------------------------------------------------------------
 .claude/qa-test-env.md
-.claude/settings.json
+# NOTE: .claude/settings.json IS committed - it is what switches the hooks on,
+# and a clone with it missing has no guards at all. Personal overrides belong
+# in .claude/settings.local.json, which stays ignored below.
 .claude/settings.local.json
 
 # Other credential shapes
