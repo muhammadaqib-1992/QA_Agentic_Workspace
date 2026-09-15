@@ -97,6 +97,14 @@ python .claude/skills/qa-kb-sync/scripts/kb_sync.py save <folder> <fileId> <resu
 - **Removed file** → keep the row, append `removed from Drive YYYY-MM-DD`.
 - **`call-recordings/`** keeps its own shape — date, topics, decisions, open items, participants. Take these from the transcript; never invent a decision that isn't in it.
 
+  A backlog of unread transcripts is the normal starting state, and reading them all is not affordable — an hour of speech is a very large file. Build the index as a **routing table** first:
+
+```bash
+python .claude/skills/qa-kb-sync/scripts/profile_transcripts.py knowledge-base/call-recordings
+```
+
+  That prints date, length, main speakers and dominant domain terms per call. Turn it into the index table, and label the topic column plainly as a term-frequency profile that nobody has read — it says what a call spent time on, never what was decided. Once a call has actually been read, replace its row's topics with a real summary and move any decision into the index's decisions table. Never let a frequency profile be cited as a decision.
+
 Always include the Drive link in the row. A teammate who hasn't synced can then still open the source.
 
 **3. Log the run.**

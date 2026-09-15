@@ -1,14 +1,18 @@
 {
   "_comment": [
-    "Links each knowledge-base folder to a Google Drive folder, for the qa-kb-sync skill.",
+    "Links each knowledge-base folder to a Google Drive folder, for the kb-sync skill.",
     "Paste a Drive FOLDER link per folder (https://drive.google.com/drive/folders/<id>).",
     "Leave a folder as <PASTE...> to skip it. These links are the same for the whole",
     "project team, so commit this file once and teammates get them when they clone.",
     "The documents themselves are downloaded locally and are NEVER committed to git."
   ],
 
-  "max_download_mb": 25,
+  "_size_note": "10 MB is the Google Drive connector's own hard limit, not a preference. Raising this number does not raise the limit - larger files are recorded as linked, with their Drive URL in the INDEX.md row.",
+  "max_download_mb": 10,
   "never_download_mime_prefixes": ["video/", "audio/"],
+
+  "_exclude_note": "Zoom writes each call twice: *.transcript.vtt has speaker names and precise timestamps; *.cc.vtt has neither and garbles names. Sync only the transcript.",
+  "exclude_name_patterns": ["*.cc.vtt"],
 
   "google_export": {
     "application/vnd.google-apps.document": "docx",

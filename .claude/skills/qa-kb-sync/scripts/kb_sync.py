@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Deterministic half of the qa-kb-sync skill: config, change detection, decoding, manifest, log.
 
-RUN this script — do not read it into context. Only its output costs tokens.
+RUN this script - do not read it into context. Only its output costs tokens.
 
     kb_sync.py check
     kb_sync.py plan   <folder>
@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import fnmatch
 import json
 import re
 import sys
@@ -64,6 +65,7 @@ def load_config() -> dict:
     cfg.setdefault("max_download_mb", 25)
     cfg.setdefault("never_download_mime_prefixes", ["video/", "audio/"])
     cfg.setdefault("google_export", {})
+    cfg.setdefault("exclude_name_patterns", [])
     return cfg
 
 
@@ -106,7 +108,7 @@ def _first(d: dict, *keys, default=None):
 
 
 def normalise_listing(raw) -> list:
-    """Drive listings come back in several shapes — accept them all."""
+    """Drive listings come back in several shapes - accept them all."""
     if isinstance(raw, dict):
         for key in ("files", "results", "items", "data", "entries"):
             if isinstance(raw.get(key), list):
@@ -150,7 +152,7 @@ def normalise_listing(raw) -> list:
 def read_listing(folder: str) -> list:
     p = KB / folder / ".sync-listing.json"
     if not p.exists():
-        die(f"{p} not found — fetch the Drive listing and write it there first")
+        die(f"{p} not found - fetch the Drive listing and write it there first")
     return normalise_listing(json.loads(p.read_text(encoding="utf-8")))
 
 
@@ -160,7 +162,7 @@ def safe_name(title: str) -> str:
 
 
 def planned_name(entry: dict, cfg: dict) -> str:
-    """The local filename for a Drive file — same rule in plan and save, so they agree."""
+    """The local filename for a Drive file - same rule in plan and save, so they agree."""
     name = safe_name(entry["title"])
     mime = entry["mimeType"]
     if mime.startswith(GOOGLE_NATIVE):
@@ -180,6 +182,10 @@ def classify(entry: dict, cfg: dict, known: dict):
     mime = entry["mimeType"]
     if mime == FOLDER_MIME:
         return "subfolder", "sub-folders are not synced"
+
+    for pattern in cfg["exclude_name_patterns"]:
+        if fnmatch.fnmatch(entry["title"].lower(), pattern.lower()):
+            return "excluded", f"matches exclude pattern {pattern}"
 
     prev = known.get(entry["id"])
     changed = prev is None or prev.get("modifiedTime") != entry["modifiedTime"]
@@ -239,7 +245,7 @@ def cmd_plan(args):
     known = man["files"]
 
     plan = {"folder": folder, "folder_id": fid, "download": [], "link": [],
-            "subfolders": [], "removed": [], "unchanged": 0}
+            "subfolders": [], "removed": [], "unchanged": 0, "excluded": 0}
 
     seen = set()
     for e in listing:
@@ -247,6 +253,9 @@ def cmd_plan(args):
         action, reason = classify(e, cfg, known)
         if action == "unchanged":
             plan["unchanged"] += 1
+            continue
+        if action == "excluded":
+            plan["excluded"] += 1
             continue
         if action == "subfolder":
             plan["subfolders"].append({"id": e["id"], "title": e["title"]})
@@ -376,7 +385,7 @@ def cmd_status(_args):
         for meta in files.values():
             counts[meta.get("status", "?")] = counts.get(meta.get("status", "?"), 0) + 1
         summary = ", ".join(f"{v} {k}" for k, v in sorted(counts.items()))
-        print(f"  {folder}: last sync {man.get('last_sync') or 'unknown'} — {summary or 'no files'}")
+        print(f"  {folder}: last sync {man.get('last_sync') or 'unknown'} - {summary or 'no files'}")
 
 
 def main():
