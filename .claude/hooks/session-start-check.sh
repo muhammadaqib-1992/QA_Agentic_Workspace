@@ -36,7 +36,7 @@ fi
 
 # --- knowledge base -----------------------------------------------------------
 if [ -d "knowledge-base" ]; then
-  docs=$(find knowledge-base -type f ! -name "INDEX.md" ! -name "README.md" ! -name ".gitkeep" 2>/dev/null | wc -l | tr -d ' ')
+  docs=$(find knowledge-base -type f ! -name "INDEX.md" ! -name "README.md" ! -name ".gitkeep" ! -name "sync-config.json" ! -name "SYNC_LOG.md" ! -name ".sync-*" 2>/dev/null | wc -l | tr -d ' ')
   echo "Knowledge base: $docs source document(s)."
   if [ "$docs" -gt 0 ]; then
     echo "  Read the folder INDEX.md files before opening any source document."
@@ -47,11 +47,18 @@ fi
 
 # --- knowledge-base sync ------------------------------------------------------
 if [ -f "knowledge-base/sync-config.json" ]; then
-  configured="$(grep -c 'drive.google.com' knowledge-base/sync-config.json 2>/dev/null || echo 0)"
+  # Count only folder entries ("name": "https://drive.google.com/..."), never the
+  # example URL in the _comment block - that made an unconfigured file look linked.
+  # grep -c prints 0 and exits 1 when nothing matches, so `|| echo 0` would append
+  # a second zero, and the numeric test below would then break on that two-line value.
+  configured="$(grep -cE '^[[:space:]]*"[a-z-]+":[[:space:]]*"https://drive\.google\.com' knowledge-base/sync-config.json 2>/dev/null || true)"
+  configured="${configured:-0}"
   if [ "$configured" -eq 0 ]; then
     echo "Drive sync: no folder links set yet in knowledge-base/sync-config.json."
   else
-    last="$(grep -E '^\| [0-9]{4}-' knowledge-base/SYNC_LOG.md 2>/dev/null | tail -1 | cut -d'|' -f2 | tr -d ' ')"
+    # Trim the surrounding spaces only - `tr -d ' '` also ate the one between
+    # the date and the time, printing 2026-09-1413:42.
+    last="$(grep -E '^\| [0-9]{4}-' knowledge-base/SYNC_LOG.md 2>/dev/null | tail -1 | cut -d'|' -f2 | sed 's/^ *//; s/ *$//')"
     if [ -n "${last:-}" ]; then
       echo "Drive sync: $configured folder(s) linked, last run $last."
     else
